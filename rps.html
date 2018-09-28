@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissors Part 2
+  </title>
+
+  <style type="text/css">
+
+    /* Make it Pretty! */
+    body {
+      background-color: silver;
+      color: white;
+      padding: 20px;
+      font-family: Arial, Verdana, sans-serif;
+    }
+
+    h1 {
+      background-color: rgb(245, 176, 204);
+      color: #64645A;
+      padding: inherit;
+    }
+
+    p {
+      padding: 5px;
+      margin: 0px;
+      font-size: 16pt;
+    }
+
+    p.pink {
+      background-color: rgb(245, 176, 204);
+    }
+
+    p.green,
+    #game {
+      background-color: rgb(0, 187, 136);
+    }
+
+    p.blue,
+    #instructions {
+      background-color: rgb(140, 202, 242);
+    }
+
+    table,
+    th,
+    td {
+      border: 2px solid darkgreen;
+      border-collapse: collapse;
+      padding: 5px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!--  Heading & Game Instructions -->
+  <h1> Rock, Paper, Scissors </h1>
+  <hr>
+  <div id="instructions">
+    <p class="blue"> Instructions: </p>
+    <p class="blue"> Press a key to play a round: r(ock), p(aper) or s(cissors) </p>
+    <p class="blue"> 'x' to exit </p>
+    <hr>
+  </div>
+  <br>
+
+  <!-- Game Table,  this will be modified by the javascript function -->
+  <div id="game">
+    <table>
+      <tr>
+        <td>Winner</td>
+        <td>User Play</td>
+        <td>Computer Play</td>
+        <td>Wins</td>
+        <td>Losses</td>
+        <td>Ties</td>
+      </tr>
+      <tr>
+        <td id="winner">none</td>
+        <td id="userChoice">none</td>
+        <td id="computerChoice">none</td>
+        <td id="numWins">0</td>
+        <td id="numLosses">0</td>
+        <td id="numTies">0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Javascript Section -->
+  <script type="text/javascript">
+  
+    // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
+    var computerChoices = ["r", "p", "s"];
+    var moves = ["rock", "paper", "scissor"];
+    var wins = 0;
+    var losses = 0;
+    var ties = 0;
+
+    // This function is run whenever the user presses a key.
+    document.onkeyup = function (event) {
+
+      // Determines which key was pressed.
+      userGuess = event.key;
+
+      // Randomly chooses a choice from the options array. This is the Computer's guess.
+      computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+
+      // Alerts the key the user pressed (userGuess).
+      // alert("User guess: " + userGuess);
+
+      // Ensure our input is well formed -- we'll accept r, R, p, P, or s, S (and x, X)
+      userGuess = userGuess.toLowerCase();
+
+      // Save our choices as numeric indexes for later lookups (to print long names to the output)
+      var userIndex = computerChoices.indexOf(userGuess);
+      var computerIndex = computerChoices.indexOf(computerGuess);
+
+      // Test for valid characters - r, p, s or x
+      if((userIndex == -1) &&
+         (userGuess != 'x')) {
+        /* ignore the key */
+        alert("Please choose [ r|p|s or x ]")
+        return;
+      }
+
+      // Gracefully exit if the user wants to quit
+      if (userGuess == "x") {
+        alert("Thanks for playing!");
+        // put intentional infinite loop here?
+      }
+
+      // Alerts the Computer's guess.
+      // alert("Computer guess: " + computerGuess);
+
+      // Game Logic: ties, wins & losses,  tally the results & save the winner name      
+      if (userGuess === computerGuess) {
+        ties += 1;
+        winner = "none";
+      } else if ((userGuess === "r" && computerGuess === "s") ||
+        (userGuess === "s" && computerGuess === "p") ||
+        (userGuess === "p" && computerGuess === "r")) {
+        wins += 1;
+        winner = "you";
+      } else {
+        losses += 1;
+        winner = "computer";
+      }
+
+      /* Look up a readable name for the user's choice to put in game table*/
+      if (userIndex == -1)
+        userMove = "none";
+      else
+        userMove = moves[userIndex];
+
+      /* Look up a readable name for the computer's choice to put in game table*/
+      if (computerIndex == -1)
+        computerMove = "none";
+      else
+        computerMove = moves[computerIndex];
+
+      /* Write the results to the HTML DOM */
+      document.getElementById("userChoice").textContent = userMove;
+      document.getElementById("computerChoice").textContent = computerMove;
+      document.getElementById("numWins").textContent = wins;
+      document.getElementById("numLosses").textContent = losses;
+      document.getElementById("numTies").textContent = ties;
+      document.getElementById("winner").textContent = winner;
+
+      /* Debugging statements to the console */
+      // console.log("user guess = " + userGuess);
+      // console.log("computer   = " + computerGuess);
+      // console.log("wins = " + wins);
+      // console.log("losses = " + losses);
+      // console.log("ties = " + ties);
+    };
+  </script>
+
+</body>
+
+</html>
